@@ -26,13 +26,14 @@ class SearchBar extends Component {
                 />
                 <p>
                     <input
-                        type="checkbox"
+                        type="checkbox" 
+                        id = "stock-checkbox"
                         checked={this.props.inStockOnly}
                         onChange={this.handleInStockChange}
                     />
                     {' '}
-            Only show products in stock
-          </p>
+                    <label htmlFor="stock-checkbox">Only show products in stock</label> 
+            </p>
             </form>
         );
     }
