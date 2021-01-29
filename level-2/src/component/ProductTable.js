@@ -6,10 +6,14 @@ class ProductTable extends Component {
     constructor(props) {
         super(props);
         this.onDeleteButtonClick = this.onDeleteButtonClick.bind(this);
+        this.onEditButtonClick = this.onEditButtonClick.bind(this);
     }
 
     onDeleteButtonClick(products) {
         this.props.onDeleteButtonClick(products);
+    }
+    onEditButtonClick(products){
+        this.props.onEditButtonClick(products);
     }
 
     render() {
@@ -18,6 +22,7 @@ class ProductTable extends Component {
             if (product.name.includes(this.props.filterText)){
                 rows.push(<ProductRow key={index}
                     onDeleteButtonClick={this.onDeleteButtonClick}
+                    onEditButtonClick={this.onEditButtonClick}
                     product={product} />);
             }
         });

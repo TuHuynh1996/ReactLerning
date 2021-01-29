@@ -5,10 +5,15 @@ class ProductRow extends Component {
     constructor(props) {
         super(props);
         this.deleteHandleClick = this.deleteHandleClick.bind(this);
+        this.editHandleClick = this.editHandleClick.bind(this);
     }
 
     deleteHandleClick(e) {
         this.props.onDeleteButtonClick(this.props.product);
+        e.preventDefault();
+    }
+    editHandleClick(e){
+        this.props.onEditButtonClick(this.props.product);
         e.preventDefault();
     }
 
@@ -33,7 +38,7 @@ class ProductRow extends Component {
                 <td>{product.id}</td>
                 <td>{product.name}</td>
                 <td>{this.formatDate(product.createdAt)}</td>
-                <td><Button variant="info">Edit</Button> </td>
+                <td><Button variant="info" onClick={this.editHandleClick}>Edit</Button> </td>
                 <td><Button variant="danger" onClick={this.deleteHandleClick} >Delete</Button> </td>
             </tr>
         );

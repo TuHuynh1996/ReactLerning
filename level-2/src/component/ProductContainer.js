@@ -1,19 +1,24 @@
 import React, { Component } from 'react';
 import ProductTable from './ProductTable';
 import SearchBar from './SearchBar';
+import EntryPopup from './EntryPopup';
 import axios from 'axios';
-import {  Container } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 
 class ProductContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
             filterText: "",
-            products: []
+            products: [],
+            isShowPopup: false,
+            productForcus: null
         }
 
+        this.onPopupClose = this.onPopupClose.bind(this);
         this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
         this.onDeleteButtonClick = this.onDeleteButtonClick.bind(this);
+        this.onEditButtonClick = this.onEditButtonClick.bind(this);
     }
 
     componentDidMount() {
@@ -45,6 +50,18 @@ class ProductContainer extends Component {
             }
         })
     }
+    onEditButtonClick(products) {
+        this.setState(() => ({
+            isShowPopup: true,
+            productForcus: products
+        }));
+    }
+    onPopupClose(){
+        this.setState( () =>({
+            isShowPopup: false,
+            productForcus: null
+        }));
+    }
 
     render() {
         return (
@@ -55,10 +72,11 @@ class ProductContainer extends Component {
                 />
                 <ProductTable
                     onDeleteButtonClick={this.onDeleteButtonClick}
+                    onEditButtonClick={this.onEditButtonClick}
                     products={this.state.products}
                     filterText={this.state.filterText}
                 />
-
+                <EntryPopup isShow={this.state.isShowPopup} onPopupClose={this.onPopupClose} product={this.state.productForcus} />
             </Container>
         );
     }
