@@ -19,14 +19,16 @@ class ProductContainer extends Component {
         this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
         this.onDeleteButtonClick = this.onDeleteButtonClick.bind(this);
         this.onEditButtonClick = this.onEditButtonClick.bind(this);
+        this.onNameTextChange = this.onNameTextChange.bind(this);
+        this.onSaveButtonClick = this.onSaveButtonClick.bind(this);
     }
 
     componentDidMount() {
         axios.get(`https://5d6973ee8134fd001430c6b7.mockapi.io/api/test1/test`)
             .then(res => {
-                const name = res.data;
+                const data = res.data;
                 this.setState(() => ({
-                    products: name
+                    products: data
                 }));
             })
     }
@@ -50,17 +52,47 @@ class ProductContainer extends Component {
             }
         })
     }
+
     onEditButtonClick(products) {
         this.setState(() => ({
             isShowPopup: true,
-            productForcus: products
+            productForcus: { ...products }
         }));
     }
-    onPopupClose(){
-        this.setState( () =>({
+
+    onPopupClose() {
+        this.setState(() => ({
             isShowPopup: false,
             productForcus: null
         }));
+    }
+    onNameTextChange(product) {
+        this.setState(() => ({
+            productForcus: product
+        }));
+    }
+    onSaveButtonClick(product) {
+        axios.put(
+            `https://5d6973ee8134fd001430c6b7.mockapi.io/api/test1/test/${product.id}`, product
+        ).then(res => {
+            if (res.statusText === "OK") {
+                this.setState((state) => ({
+                    products: this.getProductsEditData(state, res.data)
+                }));
+            }
+        });
+    }
+
+    getProductsEditData = (state, data) => {
+        const productsData = [];
+        state.products.forEach(element => {
+            if (element.id === data.id) {
+                productsData.push(data);
+            } else {
+                productsData.push(element);
+            }
+        });
+        return productsData;
     }
 
     render() {
@@ -76,7 +108,11 @@ class ProductContainer extends Component {
                     products={this.state.products}
                     filterText={this.state.filterText}
                 />
-                <EntryPopup isShow={this.state.isShowPopup} onPopupClose={this.onPopupClose} product={this.state.productForcus} />
+                <EntryPopup isShow={this.state.isShowPopup}
+                    onPopupClose={this.onPopupClose}
+                    onNameTextChange={this.onNameTextChange}
+                    product={this.state.productForcus}
+                    onSaveButtonClick={this.onSaveButtonClick} />
             </Container>
         );
     }

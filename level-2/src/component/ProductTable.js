@@ -33,7 +33,7 @@ class ProductTable extends Component {
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Date</th>
+                            <th>Date Update</th>
                             <th></th>
                             <th></th>
                         </tr>

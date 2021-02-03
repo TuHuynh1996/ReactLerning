@@ -9,54 +9,53 @@ class EntryPopup extends Component {
             product: null
         }
         this.handleClose = this.handleClose.bind(this);
+        this.handleNameTextChange = this.handleNameTextChange.bind(this);
+        this.handleSaveButtonClick = this.handleSaveButtonClick.bind(this);
     }
 
     handleClose() {
         this.props.onPopupClose();
     }
-
-    // componentDidMount(){
-    //     this.setState((state,props) => ({
-    //         product: this.getProduct(props)
-    //     }));
-    // }
-
-    getProduct() {
-        let product = {
-            id: "",
-            name: ""
+    handleNameTextChange(e) {
+        const product = this.props.product ?? {
+            id:0,
+            name: e.target.value,
+            createdAt: new Date(),
         };
-
-        if (this.props.product != null) {
-            return this.props.product;
-        }
-        return product;
+        product.name = e.target.value;
+        product.createdAt = new Date();
+        this.props.onNameTextChange(product);
+    }
+    handleSaveButtonClick(e){
+        this.props.onSaveButtonClick(this.props.product);
+        this.handleClose();
+        e.preventDefault();
     }
 
     render() {
         const formControll = this.props.product != null ?
-            <Form.Row controlId="formHorizontalEmail">
+            <Form.Row>
                 <Col sm={2}>
                     <Form.Control value={this.props.product.id} disabled />
                 </Col>
                 <Col sm={10}>
-                    <Form.Control value={this.props.product.name} type="text" placeholder="Name" />
+                    <Form.Control value={this.props.product.name} onChange={this.handleNameTextChange} type="text" placeholder="Name" />
                 </Col>
             </Form.Row> :
-            <Form.Row controlId="formHorizontalEmail">
+            <Form.Row >
                 <Col sm={2}>
                     <Form.Control value="#" disabled />
                 </Col>
                 <Col sm={10}>
-                    <Form.Control value="" type="text" placeholder="Name" />
+                    <Form.Control value="" type="text" onChange={this.handleNameTextChange} placeholder="Name" />
                 </Col>
             </Form.Row>;
-
+        const modalHeading = this.props.product != null ? "Edit Form" : "Add Form";
 
         return (
             <Modal show={this.props.isShow} onHide={this.handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
+                    <Modal.Title>{modalHeading}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
@@ -66,10 +65,10 @@ class EntryPopup extends Component {
                 <Modal.Footer>
                     <Button variant="secondary" onClick={this.handleClose}>
                         Close
-              </Button>
-                    <Button variant="primary" onClick={this.handleClose}>
+                    </Button>
+                    <Button variant="primary" onClick={this.handleSaveButtonClick}>
                         Save Changes
-              </Button>
+                    </Button>
                 </Modal.Footer>
             </Modal>)
     }
