@@ -3,7 +3,7 @@ import ProductTable from './ProductTable';
 import SearchBar from './SearchBar';
 import EntryPopup from './EntryPopup';
 import axios from 'axios';
-import { Container } from 'react-bootstrap';
+import { Container, Col, Row, Button } from 'react-bootstrap';
 
 class ProductContainer extends Component {
     constructor(props) {
@@ -21,6 +21,7 @@ class ProductContainer extends Component {
         this.onEditButtonClick = this.onEditButtonClick.bind(this);
         this.onNameTextChange = this.onNameTextChange.bind(this);
         this.onSaveButtonClick = this.onSaveButtonClick.bind(this);
+        this.handelCreateClick = this.handelCreateClick.bind(this);
     }
 
     componentDidMount() {
@@ -30,7 +31,7 @@ class ProductContainer extends Component {
                 this.setState(() => ({
                     products: data
                 }));
-            })
+            });
     }
 
     handleFilterTextChange(filterText) {
@@ -50,7 +51,7 @@ class ProductContainer extends Component {
                     products: state.products.filter((item) => item.id !== res.data.id)
                 }));
             }
-        })
+        });
     }
 
     onEditButtonClick(products) {
@@ -72,15 +73,30 @@ class ProductContainer extends Component {
         }));
     }
     onSaveButtonClick(product) {
-        axios.put(
-            `https://5d6973ee8134fd001430c6b7.mockapi.io/api/test1/test/${product.id}`, product
-        ).then(res => {
-            if (res.statusText === "OK") {
-                this.setState((state) => ({
-                    products: this.getProductsEditData(state, res.data)
-                }));
-            }
-        });
+        if (product.id === 0) {
+            console.log(product);
+            axios.post(
+                `https://5d6973ee8134fd001430c6b7.mockapi.io/api/test1/test/`, product
+            ).then(res => {
+                if (res.statusText === "OK") {
+                    this.setState((state) => ({
+                        products: {...state.products}
+                    }));
+                }
+                this.onPopupClose();
+            });
+        } else {
+            axios.put(
+                `https://5d6973ee8134fd001430c6b7.mockapi.io/api/test1/test/${product.id}`, product
+            ).then(res => {
+                if (res.statusText === "OK") {
+                    this.setState((state) => ({
+                        products: this.getProductsEditData(state, res.data)
+                    }));
+                }
+                this.onPopupClose();
+            });
+        }
     }
 
     getProductsEditData = (state, data) => {
@@ -95,13 +111,30 @@ class ProductContainer extends Component {
         return productsData;
     }
 
+    handelCreateClick() {
+        this.setState(() => ({
+            productForcus: {
+                id: 0,
+                name: ""
+            },
+            isShowPopup: true
+        }));
+    }
+
     render() {
         return (
             <Container>
-                <SearchBar
-                    filterText={this.state.filterText}
-                    onFilterTextChange={this.handleFilterTextChange}
-                />
+                <Row>
+                    <Col xs={6} sm={6} md={3}>
+                        <SearchBar
+                            filterText={this.state.filterText}
+                            onFilterTextChange={this.handleFilterTextChange}
+                        />
+                    </Col>
+                    <Col xs={6} sm={6}>
+                        <Button variant="primary" onClick={this.handelCreateClick}> Create New </Button>
+                    </Col>
+                </Row>
                 <ProductTable
                     onDeleteButtonClick={this.onDeleteButtonClick}
                     onEditButtonClick={this.onEditButtonClick}

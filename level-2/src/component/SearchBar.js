@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Row } from 'react-bootstrap'
+import { Form } from 'react-bootstrap'
 
 class SearchBar extends Component {
     constructor(props) {
@@ -13,15 +13,15 @@ class SearchBar extends Component {
 
     render() {
         return (
-            <Row>
-                <Form>
-                    <Form.Group>
-                        <Form.Control
-                            value={this.props.filterText}
-                            onChange={this.handleFilterTextChange} type="text" placeholder="Search..." />
-                    </Form.Group>
-                </Form >
-            </Row>
+
+            <Form>
+                <Form.Group>
+                    <Form.Control
+                        value={this.props.filterText}
+                        onChange={this.handleFilterTextChange} type="text" placeholder="Search..." />
+                </Form.Group>
+            </Form >
+
         );
     }
 }
