@@ -8,14 +8,10 @@ class EntryPopup extends Component {
         this.state = {
             product: null
         }
-        this.handleClose = this.handleClose.bind(this);
         this.handleNameTextChange = this.handleNameTextChange.bind(this);
         this.handleSaveButtonClick = this.handleSaveButtonClick.bind(this);
     }
 
-    handleClose() {
-        this.props.onPopupClose();
-    }
     handleNameTextChange(e) {
         const product = this.props.product.id === 0 ? {
             id: 0,
@@ -58,7 +54,7 @@ class EntryPopup extends Component {
         }
 
         return (
-            <Modal show={this.props.isShow} onHide={this.handleClose}>
+            <Modal show={this.props.isShow} onHide={this.props.onPopupClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>{modalHeading}</Modal.Title>
                 </Modal.Header>
@@ -68,7 +64,7 @@ class EntryPopup extends Component {
                     </Form >
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={this.handleClose}>
+                    <Button variant="secondary" onClick={this.props.onPopupClose}>
                         Close
                     </Button>
                     <Button variant="primary" onClick={this.handleSaveButtonClick}>

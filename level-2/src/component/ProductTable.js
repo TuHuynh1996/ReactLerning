@@ -21,7 +21,7 @@ class ProductTable extends Component {
         this.props.products.forEach((product, index) => {
             if (product.name.includes(this.props.filterText)){
                 rows.push(<ProductRow key={index}
-                    onDeleteButtonClick={this.onDeleteButtonClick}
+                    onDeleteButtonClick={(products) =>  this.props.onDeleteButtonClick(products)}
                     onEditButtonClick={this.onEditButtonClick}
                     product={product} />);
             }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ProductTable from './ProductTable';
 import SearchBar from './SearchBar';
 import EntryPopup from './EntryPopup';
+import FlashMessage from './FlashMessage';
 import axios from 'axios';
 import { Container, Col, Row, Button } from 'react-bootstrap';
 
@@ -12,7 +13,10 @@ class ProductContainer extends Component {
             filterText: "",
             products: [],
             isShowPopup: false,
-            productForcus: null
+            productForcus: null,
+            messageDuration: 7000,
+            message: "",
+            messageVariant: ""
         }
 
         this.onPopupClose = this.onPopupClose.bind(this);
@@ -74,15 +78,26 @@ class ProductContainer extends Component {
     }
     onSaveButtonClick(product) {
         if (product.id === 0) {
-            console.log(product);
             axios.post(
                 `https://5d6973ee8134fd001430c6b7.mockapi.io/api/test1/test/`, product
             ).then(res => {
-                if (res.statusText === "OK") {
+                console.log(this.state.products);
+                console.log(res.data);
+                res.data.id = res.data.id.toString();
+                console.log(res.data);
+                if (res.statusText === "Created") {
                     this.setState((state) => ({
-                        products: {...state.products}
+                        products: [...state.products, res.data],
+                        message: "Create successful!",
+                        messageVariant: "success"
+                    }));
+                } else {
+                    this.setState(() => ({
+                        message: "Error!",
+                        messageVariant: "warning"
                     }));
                 }
+                console.log(this.state.products);
                 this.onPopupClose();
             });
         } else {
@@ -91,7 +106,14 @@ class ProductContainer extends Component {
             ).then(res => {
                 if (res.statusText === "OK") {
                     this.setState((state) => ({
-                        products: this.getProductsEditData(state, res.data)
+                        products: this.getProductsEditData(state, res.data),
+                        message: "Change successful!",
+                        messageVariant: "success"
+                    }));
+                } else {
+                    this.setState((state) => ({
+                        message: "Error!",
+                        messageVariant: "warning"
                     }));
                 }
                 this.onPopupClose();
@@ -120,10 +142,20 @@ class ProductContainer extends Component {
             isShowPopup: true
         }));
     }
+    setProductTable(){
+
+    }
 
     render() {
         return (
             <Container>
+                <Row>
+                    <Col xs={12} >
+                        <FlashMessage duration={this.state.messageDuration} variant={this.state.messageVariant}>
+                            {this.state.message}
+                        </FlashMessage>
+                    </Col>
+                </Row>
                 <Row>
                     <Col xs={6} sm={6} md={3}>
                         <SearchBar
