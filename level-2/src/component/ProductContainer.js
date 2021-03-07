@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import ProductTable from './ProductTable';
 import SearchBar from './SearchBar';
 import EntryPopup from './EntryPopup';
-import FlashMessage from './FlashMessage';
+import Message from './Message'
 import axios from 'axios';
-import { Container, Col, Row, Button } from 'react-bootstrap';
+import { Container, Col, Row, Button, Alert } from 'react-bootstrap';
 
 class ProductContainer extends Component {
     constructor(props) {
@@ -14,7 +14,7 @@ class ProductContainer extends Component {
             products: [],
             isShowPopup: false,
             productForcus: null,
-            messageDuration: 7000,
+            showMessage: false,
             message: "",
             messageVariant: ""
         }
@@ -89,12 +89,14 @@ class ProductContainer extends Component {
                     this.setState((state) => ({
                         products: [...state.products, res.data],
                         message: "Create successful!",
-                        messageVariant: "success"
+                        messageVariant: "success",
+                        showMessage: true
                     }));
                 } else {
                     this.setState(() => ({
                         message: "Error!",
-                        messageVariant: "warning"
+                        messageVariant: "warning",
+                        showMessage: true
                     }));
                 }
                 console.log(this.state.products);
@@ -108,12 +110,14 @@ class ProductContainer extends Component {
                     this.setState((state) => ({
                         products: this.getProductsEditData(state, res.data),
                         message: "Change successful!",
-                        messageVariant: "success"
+                        messageVariant: "success",
+                        showMessage: true
                     }));
                 } else {
                     this.setState((state) => ({
                         message: "Error!",
-                        messageVariant: "warning"
+                        messageVariant: "warning",
+                        showMessage: true
                     }));
                 }
                 this.onPopupClose();
@@ -142,7 +146,7 @@ class ProductContainer extends Component {
             isShowPopup: true
         }));
     }
-    setProductTable(){
+    setProductTable() {
 
     }
 
@@ -151,9 +155,11 @@ class ProductContainer extends Component {
             <Container>
                 <Row>
                     <Col xs={12} >
-                        <FlashMessage duration={this.state.messageDuration} variant={this.state.messageVariant}>
-                            {this.state.message}
-                        </FlashMessage>
+                        <Message show = {this.state.showMessage}>
+                            <Alert variant={this.state.messageVariant}>
+                                {this.state.message}
+                            </Alert>
+                        </Message>
                     </Col>
                 </Row>
                 <Row>
