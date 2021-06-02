@@ -2,7 +2,8 @@
 import React, { Component, useEffect } from "react";
 import { useLocation, Route, Switch } from "react-router-dom";
 import routes from "../server/router";
-
+import Navbars from '../component/Navbars'
+import Sidebar from '../component/Sidebar'
 function UserLayout() {
     const location = useLocation();
     const mainPanel = React.useRef(null);
@@ -21,24 +22,10 @@ function UserLayout() {
             }
         });
     };
-    // useEffect(() => {
-    //     document.documentElement.scrollTop = 0;
-    //     document.scrollingElement.scrollTop = 0;
-    //     mainPanel.current.scrollTop = 0;
-    //     if (
-    //         window.innerWidth < 993 &&
-    //         document.documentElement.className.indexOf("nav-open") !== -1
-    //     ) {
-    //         document.documentElement.classList.toggle("nav-open");
-    //         var element = document.getElementById("bodyClick");
-    //         element.parentNode.removeChild(element);
-    //     }
-    // }, [location]);
-    console.log(routes)
     return (
 
-
-        <div className="App">
+        <div style={{ background: 'rgb(226, 226, 226)' }}>
+            <Navbars />
             <Switch>{getRoutes(routes)}</Switch>
         </div>
     );

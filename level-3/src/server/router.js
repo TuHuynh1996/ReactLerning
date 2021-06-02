@@ -1,22 +1,27 @@
 
 import About from '../component/About'
 import Shop from '../component/Shop'
+import Chart from '../component/Chart'
 
 const dashboardRoutes = [
     {
-      upgrade: true,
       path: "/about",
       name: "about",
-    //   icon: "",
       component: About,
       layout: "/user",
     },
     {
-        upgrade: true,
+
         path: "/shop",
         name: "shop",
-      //   icon: "",
         component: Shop,
+        layout: "/user",
+      },
+      {
+
+        path: "/chart",
+        name: "chart",
+        component: Chart,
         layout: "/user",
       },
   ];
