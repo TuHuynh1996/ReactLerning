@@ -3,7 +3,7 @@ import React, { Component, useEffect } from "react";
 import { useLocation, Route, Switch } from "react-router-dom";
 import routes from "../server/router";
 import Navbars from '../component/Navbars'
-import Sidebar from '../component/Sidebar'
+import { Row, Col, Container, Tabs, Tab, Card } from 'react-bootstrap'
 function UserLayout() {
     const location = useLocation();
     const mainPanel = React.useRef(null);
@@ -24,9 +24,12 @@ function UserLayout() {
     };
     return (
 
-        <div style={{ background: 'rgb(226, 226, 226)' }}>
-            <Navbars />
-            <Switch>{getRoutes(routes)}</Switch>
+        <div>
+            <div >
+                <Container className='border'>
+                    <Switch>{getRoutes(routes)}</Switch>
+                </Container>
+            </div>
         </div>
     );
 }

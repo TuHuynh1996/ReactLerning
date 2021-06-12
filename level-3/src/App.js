@@ -1,31 +1,25 @@
-import './App.css';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-import UserLayout from './layout/UserLayout'
-import Nav from './component/Nav'
-
+import "./App.css";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
+import UserLayout from "./layout/UserLayout";
+import Navbars from "./component/Navbars";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (
-
     <Router>
-      <Nav />
+      <Navbars />
       <Switch>
+        {/* <Route path="/login" render={(props) => <Login {...props} />} /> */}
         <Route path="/user" render={(props) => <UserLayout {...props} />} />
-        <Redirect from="/" to="/user/shop" />
+        <Redirect from="/" to="/user/char" />
       </Switch>
     </Router>
   );
 }
-
-const Home = () => (
-  <div>
-    <div>
-      <h4>
-        This is home page
-      </h4>
-    </div>
-  </div>
-)
-
 
 export default App;
